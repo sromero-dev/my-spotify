@@ -95,6 +95,10 @@ export const createAlbum = async (req, res, next) => {
       imageUrl,
       year,
     });
+
+    await album.save();
+
+    res.status(201).json({ message: "Album created successfully: ", album });
   } catch (error) {
     console.error("Error creating album: " + error);
     next(error);
