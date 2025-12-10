@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { clerkMiddleware } from "@clerk/express";
 import fileUpload from "express-fileupload";
 import path from "path";
+import cors from "cors";
 
 // Database
 import { connectDB } from "./lib/db.js";
@@ -25,6 +26,12 @@ const __dirname = path.resolve();
 const PORT = process.env.PORT;
 
 // Middleware
+app.use(
+  cors({
+    origin: "http://localhost:5000",
+    credentials: true,
+  })
+);
 app.use(express.json()); // Allows JSON requests
 app.use(clerkMiddleware()); // Allows Clerk authentication by adding the object 'auth' to requests
 app.use(
