@@ -1,7 +1,11 @@
-import React from "react";
+import { Topbar } from "@/components/Topbar";
 
 function HomePage() {
-  return <div>HomePage</div>;
+  return (
+    <div>
+      <Topbar />
+    </div>
+  );
 }
 
 export default HomePage;
