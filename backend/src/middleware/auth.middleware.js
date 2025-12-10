@@ -15,7 +15,7 @@ export const requireAdmin = async (req, res, next) => {
     const isAdmin =
       process.env.ADMIN_EMAIL === currentUser.primaryEmailAddress?.emailAddress;
 
-    if (isAdmin) {
+    if (!isAdmin) {
       return res
         .status(403)
         .json({ message: "Forbidden - You must be an admin" });

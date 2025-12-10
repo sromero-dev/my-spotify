@@ -2,24 +2,37 @@ import { User } from "../models/user.model.js";
 
 export const authCallback = async (req, res) => {
   try {
-    const { id, firstName, lastName, imageUrl } = req.body; //Clerk data
+    console.log("Auth callback recibido:", req.body);
 
-    // Checks if user already exists
-    const user = await User.findOne({ clerkId: id });
-    if (!user) {
-      // Creates user
-      await User.create({
-        username: firstName + " " + lastName,
-        profileImage: imageUrl,
-        clerkId: id,
-      });
+    const { id, firstName, lastName, imageUrl } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ message: "Missing user ID" });
     }
 
-    res
-      .status(200)
-      .json("User signed in: " + { id, firstName, lastName, imageUrl });
+    const user = await User.findOne({ clerkId: id });
+    console.log("Usuario encontrado en DB:", user);
+
+    if (!user) {
+      console.log("Creando nuevo usuario...");
+      const newUser = await User.create({
+        username: `${firstName || ""} ${lastName || ""}`.trim() || "Usuario",
+        profileImage: imageUrl || "",
+        clerkId: id,
+      });
+      console.log("Usuario creado:", newUser);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User synchronized successfully",
+    });
   } catch (error) {
-    res.status(500).json("Internal server error: " + error);
-    console.error("Error: " + error);
+    console.error("Error en auth callback:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 };
