@@ -8,6 +8,7 @@ const useMusicStore = create<MusicStore>((set) => ({
   songs: [],
   isLoading: false,
   error: null,
+  currentAlbum: null,
 
   fetchAlbums: async () => {
     set({ isLoading: true, error: null });
@@ -15,6 +16,18 @@ const useMusicStore = create<MusicStore>((set) => ({
       const res = await axiostInstance.get<Album[]>("/albums");
       set({ albums: res.data });
     } catch (error: unknown) {
+      set({ error: getErrorMessage(error) });
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  fetchAlbumById: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const res = await axiostInstance.get<Album>(`/albums/${id}`);
+      set({ currentAlbum: res.data });
+    } catch (error) {
       set({ error: getErrorMessage(error) });
     } finally {
       set({ isLoading: false });
