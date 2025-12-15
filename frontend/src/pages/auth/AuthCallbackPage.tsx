@@ -1,20 +1,22 @@
 import { Loader } from "lucide-react";
 import { Card, CardContent } from "../../components/ui/card";
 import { useUser } from "@clerk/clerk-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { axiostInstance } from "@/lib/axios";
 import { useNavigate } from "react-router-dom";
 
 const AuthCallbackPage = () => {
   const { isLoaded, user } = useUser();
-
   const navigate = useNavigate();
-
+  const syncAttempt = useRef(false);
   useEffect(() => {
     const syncUser = async () => {
       try {
-        if (!isLoaded || !user) return;
-        await axiostInstance.post("/api/auth/callback", {
+        if (!isLoaded || !user || syncAttempt.current) return;
+
+        syncAttempt.current = true;
+
+        await axiostInstance.post("/auth/callback", {
           id: user.id,
           firstName: user.firstName,
           lastName: user.lastName,
