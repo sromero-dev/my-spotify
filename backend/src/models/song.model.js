@@ -13,7 +13,7 @@ const songSchema = new mongoose.Schema(
     albumId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Album",
-      required: true,
+      required: false,
     },
     imageUrl: {
       type: String,
@@ -23,13 +23,12 @@ const songSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    duration: {
-      type: Number,
-      required: true,
-    },
+    duration: { type: Number, required: true, min: 0 },
     year: {
       type: Number,
       required: true,
+      min: 1500,
+      max: new Date().getFullYear(),
     },
   },
   { timestamps: true }
