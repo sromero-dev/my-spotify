@@ -1,8 +1,8 @@
 import PlaylistSkeleton from "@/components/skeletons/PlaylistSkeleton";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button.styles";
 import { cn } from "@/lib/utils";
 import { SignedIn } from "@clerk/clerk-react";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { HomeIcon, Library, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
