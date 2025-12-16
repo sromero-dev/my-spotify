@@ -48,8 +48,14 @@ export interface MusicStore {
   isLoading: boolean;
   error: string | null;
   currentAlbum: Album | null;
+  madeForYouSongs: Song[];
+  trendingSongs: Song[];
+  featuredSongs: Song[];
   fetchAlbums: () => Promise<void>;
   fetchAlbumById: (id: string) => Promise<void>;
+  fetchMadeForYouSongs: () => Promise<void>;
+  fetchTrendingSongs: () => Promise<void>;
+  fetchFeaturedSongs: () => Promise<void>;
 }
 
 export interface User {
@@ -75,4 +81,18 @@ export interface AuthStore {
 
   checkAdminStatus: () => Promise<void>;
   reset: () => void;
+}
+
+export interface PlayerStore {
+  currentSong: Song | null;
+  isPlaying: boolean;
+  queue: Song[];
+  currentIndex: number;
+
+  initializeQueue: (songs: Song[]) => void;
+  playAlbum: (songs: Song[], startIndex?: number) => void;
+  setCurrentSong: (song: Song | null) => void;
+  togglePlay: () => void;
+  playNext: () => void;
+  playPrevious: () => void;
 }
